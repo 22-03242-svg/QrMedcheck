@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: qr-medcheck-demo
+    runtime: python
+    plan: starter
+    buildCommand: python -m pip install -r requirements.txt && python -m compileall -q server.py
+    startCommand: python server.py --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    autoDeploy: true
+    disk:
+      name: qr-medcheck-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: QR_MEDCHECK_DATABASE
+        value: /var/data/qr_medcheck_demo.sqlite3
